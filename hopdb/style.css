@@ -1,0 +1,19 @@
+@media (min-width: 500px) 
+	{ .state-select-narrow  {display: none;} }
+@media (max-width: 499px)
+				{ 
+				.header-banner {display: none; }
+				.state-select-wide {display: none;} 
+				.email {  display: inline-block; text-indent: 100%; white-space: nowrap; overflow: hidden; width: 16px; height: 16px; background-repeat:no-repeat; background-image: url(images/email.gif); }
+				.url   {  display: inline-block; text-indent: 100%; white-space: nowrap; overflow: hidden; width: 16px; height: 16px; background-repeat:no-repeat; background-image: url(images/world_go.png); }
+				}
+
+#colophon
+	{ 
+	background-image: url(/images/ihop-logo.png);
+	background-repeat: no-repeat;
+	height: 80px;
+	text-indent: 100px;
+	}
+	
+#map-canvas img {max-width: none;}

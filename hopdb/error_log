@@ -1,0 +1,8 @@
+[27-Mar-2018 04:36:11 America/Denver] PHP Fatal error:  Class 'WP_Widget' not found in /home2/churchu8/public_html/ihopnetwork/wp-content/plugins/hopdb/hodpb_class_hopdb_status_widget.php on line 4
+[27-Mar-2018 04:36:41 America/Denver] PHP Fatal error:  Call to undefined function add_shortcode() in /home2/churchu8/public_html/ihopnetwork/wp-content/plugins/hopdb/hopdb.php on line 69
+[27-Mar-2018 04:37:12 America/Denver] PHP Fatal error:  Class 'zobject_xml_file' not found in /home2/churchu8/public_html/ihopnetwork/wp-content/plugins/hopdb/hopdb_class_xml_file-OLD.php on line 704
+[27-Mar-2018 04:37:42 America/Denver] PHP Fatal error:  Class 'zobject_xml_file' not found in /home2/churchu8/public_html/ihopnetwork/wp-content/plugins/hopdb/hopdb_class_xml_file.php on line 966
+[27-Mar-2018 04:43:17 America/Denver] PHP Notice:  Undefined index: submit in /home2/churchu8/public_html/ihopnetwork/wp-content/plugins/hopdb/hopdb_options.php on line 18
+[27-Mar-2018 04:43:17 America/Denver] PHP Notice:  Undefined index: delete in /home2/churchu8/public_html/ihopnetwork/wp-content/plugins/hopdb/hopdb_options.php on line 18
+[27-Mar-2018 04:43:17 America/Denver] PHP Fatal error:  Call to undefined function add_option() in /home2/churchu8/public_html/ihopnetwork/wp-content/plugins/hopdb/hopdb_options.php on line 7
+[27-Mar-2018 04:44:18 America/Denver] PHP Fatal error:  Call to undefined function do_shortcode() in /home2/churchu8/public_html/ihopnetwork/wp-content/plugins/hopdb/ihop-ad.php on line 22
