@@ -246,7 +246,7 @@ function hopdb_contact_hook($atts)			{	include_once("hopdb_contactlist.php"); re
 
 function hopdb_widgets_init()			{	include_once("hodpb_class_hopdb_status_widget.php"); register_widget( 'hopdb_status_widget' );	}
 
-if ($_POST[hopdb_form]!="") 	{global $hopdb_message; include_once("hopdb_edit.php"); $hopdb_message = hopdb_save();	}
+if ($_POST['hopdb_form']!="") 	{global $hopdb_message; include_once("hopdb_edit.php"); $hopdb_message = hopdb_save();	}
 if ($_REQUEST['HOPDB_KML']!='')	{include_once("hopdb_feed.php");header ("Content-Type:text/xml");print hopdb_kml();die();	}
 if ($_REQUEST['HOPDB_XML']!='')	{include_once("hopdb_feed.php");header ("Content-Type:text/xml");print hopdb_xml();die();	}
 if ($_REQUEST['HOPDB_URL']!='')	{include_once("hopdb_import.php");hopdb_check_url_by_id($_REQUEST['HOPDB_URL']);	}
