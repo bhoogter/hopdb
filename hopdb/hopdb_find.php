@@ -168,7 +168,7 @@ function hopdb_state($st)
 		default:   $sql = "SELECT * FROM hoplist WHERE State = '$st' ORDER BY Name;";break;
 		}
 	$result = hopdb_query($sql);
-	if (mysql_num_rows($result) == 0) return "Sorry, there are no Houses of Prayer in the state of $state that we know of. <br /> If you know of any, please email me".(hopdb_contact()==""?"":" at ".hopdb_contact()).".";
+	if (mysqli_num_rows($result) == 0) return "Sorry, there are no Houses of Prayer in the state of $state that we know of. <br /> If you know of any, please email me".(hopdb_contact()==""?"":" at ".hopdb_contact()).".";
 
 	$s = "";
 
@@ -185,7 +185,7 @@ function hopdb_state($st)
 	$s = $s . "	</tr>\n";
 
 	// table headers
-	while ($row = mysql_fetch_assoc($result)) 
+	while ($row = mysqli_fetch_assoc($result)) 
 		{
 		$s = $s . "	<tr><td><br /><hr /><br /></td></tr>\n";
 		$s = $s . "	<tr>\n";
@@ -193,12 +193,12 @@ function hopdb_state($st)
 		$s = $s . "			<table width=\"100%\" >\n";
 		$s = $s . "				<tr>\n";
 		$s = $s . "					<td itemscope='1' itemtype='http://schema.org/Organization'>\n";
-		$s = $s . "						<a id='L".$row[ID]."'></a>\n";
-		$s = $s . "						<a title=\"".$row[Name]."\" target=\"_blank\" href=\"".$row[Website]."\">\n";
+		$s = $s . "						<a id='L".$row['ID']."'></a>\n";
+		$s = $s . "						<a title=\"".$row['Name']."\" target=\"_blank\" href=\"".$row['Website']."\">\n";
 
-		if ($row[Graphic] != "")
+		if ($row['Graphic'] != "")
 			{ 
-			$t = $row[Graphic];
+			$t = $row['Graphic'];
 			$w = 0;
 //print "<br/>".hopdb_plugin_dir("/links/".$t);
 			if (strstr($t, "/")===false) 
@@ -207,38 +207,38 @@ function hopdb_state($st)
 				$t = hopdb_plugin_url("/links/$t");
 				}
 //			$t = hopdb_plugin_url("/timthumb.php?w=200&zc=1&src=$t");
-			$s = $s . "						<img itemprop='image' src=\"$t\" alt=\"".$row[Name]."\" title=\"".$row[Name]."\"".($w>=550?" width=\"550\"":"")."/><br/>\n";
+			$s = $s . "						<img itemprop='image' src=\"$t\" alt=\"".$row['Name']."\" title=\"".$row['Name']."\"".($w>=550?" width=\"550\"":"")."/><br/>\n";
 			}
 
-		$s = $s . "						<font size=\"4\"><strong><span itemprop='name'>".$row[Name]."</span>\n";
-		if ($row[City] != "")
-		$s = $s . "					 - ".$row[City].", ".($st=="xx"||$st=="cn"?$row[Country]:$row[State])."\n";
+		$s = $s . "						<font size=\"4\"><strong><span itemprop='name'>".$row['Name']."</span>\n";
+		if ($row['City'] != "")
+		$s = $s . "					 - ".$row['City'].", ".($st=="xx"||$st=="cn"?$row['Country']:$row['State'])."\n";
 		$s = $s . "						</strong></font></a><br />\n";
 					
 
-		$s = $s . "<img align='right' width='16' height='16' title='Category: $row[Category]' alt='Category: $row[Category]' src='".hopdb_plugin_url("/images/feed/".hopdb_category_icon($row[Category]))."' />\n";
-		if ($row[Website] != "")
-			$s = $s . "					<a title=\"".$row[Name]."\" target=\"_blank\" href=\"$row[Website]\"><span class='url' itemprop='url'>$row[Website]</span></a><br />\n";
-		if ($row[Director] != "")
+		$s = $s . "<img align='right' width='16' height='16' title='Category: ".$row['Category']."' alt='Category: ".$row['Category']."' src='".hopdb_plugin_url("/images/feed/".hopdb_category_icon($row['Category']))."' />\n";
+		if ($row['Website'] != "")
+			$s = $s . "					<a title=\"".$row['Name']."\" target=\"_blank\" href=\"$row[Website]\"><span class='url' itemprop='url'>$row[Website]</span></a><br />\n";
+		if ($row['Director'] != "")
 			$s = $s . "					Director: <span itemprop='founder'>$row[Director]</span><br />\n";
-		if ($row[Email] != "")
-			$s = $s . "					Email: <a href=\"mailto:$row[Email]\"><span class='email' itemprop='email'>$row[Email]</span></a><br />\n"; 
-		if ($row[Phone] != "")
+		if ($row['Email'] != "")
+			$s = $s . "					Email: <a href=\"mailto:".$row['Email']."\"><span class='email' itemprop='email'>".$row['Email']."</span></a><br />\n"; 
+		if ($row['Phone'] != "")
 			$s = $s . "					Phone: <span itemprop='telephone'>$row[Phone]</span><br />\n";
 		       $s = $s . "					<span itemprop='address' itemscope='1' itemtype='http://schema.org/PostalAddress' itemref='_addressRegion4'>\n";
-		if ($row[Address] != "") 
+		if ($row['Address'] != "") 
 			$s = $s . "					<br /><span itemprop='streetaddress'>$row[Address]</span><br />\n";
 
-		if ($row[Address2] != "")
+		if ($row['Address2'] != "")
 			$s = $s . "$row[Address2]<br />";
 
-		$s = $s . "				<span itemprop='addressLocality'>$row[City]</span>, ".($st=="xx"||$st=="cn"?("<span itemprop='localityCountry'>".$row[Country]."</span>"):("<span itemprop='addressRegion'>".$row[State]."</span>"))." <span itemprop='postalCode'>$row[Zip]</span><br />";
+		$s = $s . "				<span itemprop='addressLocality'>".$row['City']."</span>, ".($st=="xx"||$st=="cn"?("<span itemprop='localityCountry'>".$row['Country']."</span>"):("<span itemprop='addressRegion'>".$row['State']."</span>"))." <span itemprop='postalCode'>".$row['Zip']."</span><br />";
 	       $s = $s . "					</span>\n";
 
-		if ($row[Description] != "")
-			$s = $s . "					<br /><div class='description' ><span itemprop='description'>".str_replace("\n","<br/>\n",$row[Description])."</span></div>\n";
+		if ($row['Description'] != "")
+			$s = $s . "					<br /><div class='description' ><span itemprop='description'>".str_replace("\n","<br/>\n",$row['Description'])."</span></div>\n";
 
-		$s = $s . "						<a href='/index.php/home/edit?id=$row[ID]'><img style='float:right;' src='".hopdb_plugin_url('/images/edit.png')."' width='16' height='16' alt='Edit this Entry' title='Edit this Entry'/></a>\n";
+		$s = $s . "						<a href='/index.php/home/edit?id=".$row['ID']."'><img style='float:right;' src='".hopdb_plugin_url('/images/edit.png')."' width='16' height='16' alt='Edit this Entry' title='Edit this Entry'/></a>\n";
 		$s = $s . "					</td>\n";
 		$s = $s . "				</tr>\n";
 		$s = $s . "			</table>\n";
@@ -256,7 +256,7 @@ function hopdb_user_list()
 	$s = "";
 	$s = $s . "<ul>\n";
 	$s = $s . "<li><hr/><h3>International</h3></li>\n";
-	while ($row = mysql_fetch_assoc($r)) 
+	while ($row = mysqli_fetch_assoc($r)) 
 		{
 		$c = $row[Country];
 		$inter = $c!="United States";
@@ -276,6 +276,3 @@ function hopdb_user_list()
 	$s = $s . "</ul>\n";
 	return $s;
 	}
-
-
-?>
