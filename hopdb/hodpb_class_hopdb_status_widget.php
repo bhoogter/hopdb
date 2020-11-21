@@ -97,7 +97,7 @@ class hopdb_status_widget extends WP_Widget
 		return $instance;
 		}
 	
-	function form()
+	function form($instance = null)
 		{
 /* Set up some default widget settings. */
 		$defaults = array( 'title' => 'Example', 'name' => 'John Doe', 'sex' => 'male', 'show_sex' => true );
