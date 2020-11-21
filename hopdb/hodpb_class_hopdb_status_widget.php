@@ -38,9 +38,9 @@ class hopdb_status_widget extends WP_Widget
 		while($row = hopdb_fetch_assoc($r))
 			{
 //print "<br/>$row[Country]=$row[Cnt]\n";
-			if ($row[Country]=="United States") {$total_usa = $row[Cnt];continue;}
-			if ($row[Country]=="Canada") {$total_canada = $row[Cnt];continue;}
-			$total_other = $total_other + $row[Cnt];
+			if ($row['Country']=="United States") {$total_usa = $row['Cnt'];continue;}
+			if ($row['Country']=="Canada") {$total_canada = $row['Cnt'];continue;}
+			$total_other = $total_other + $row['Cnt'];
 			}
 		hopdb_free_result($r);
 
@@ -50,9 +50,9 @@ class hopdb_status_widget extends WP_Widget
 		while($row = hopdb_fetch_assoc($r))
 			{
 //print "<br/>$row[State]=$row[Cnt]\n";
-			if ($row[State] == '') continue;
-			if ($row[Cnt] > $most) {$most = $row[Cnt]; $mostnm = $row[State];}
-			if ($row[Cnt] < $least) {$least = $row[Cnt]; $leastnm = $row[State];}
+			if ($row['State'] == '') continue;
+			if ($row['Cnt'] > $most) {$most = $row['Cnt']; $mostnm = $row['State'];}
+			if ($row['Cnt'] < $least) {$least = $row['Cnt']; $leastnm = $row['State'];}
 			}
 		hopdb_free_result($r);
 
@@ -63,7 +63,7 @@ class hopdb_status_widget extends WP_Widget
 
 ///////   Our Widget Display code
 		$w = $w . "<b>Total HoPs:</b> $total_count<br/>\n";
-		if (sCnt)
+		if ($sCnt)
 			{
 			$w = $w . "<span style='margin-left:10px;'><b>USA:</b> $total_usa</span><br/>\n";
 			if ($total_canada>0) $w = $w . "<span style='margin-left:10px;'><b>Canada:</b> $total_canada</span><br/>\n";
@@ -117,4 +117,3 @@ class hopdb_status_widget extends WP_Widget
 		}
 	}
 
-?>
