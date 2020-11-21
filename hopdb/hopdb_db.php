@@ -17,16 +17,18 @@ function hopdb()
 
 	if ($db_link != 0) return $db_link;
 //print "<br/>user=$db_user, pass=$db_pass, host=$db_host, db=$db_database";
+    
+    $db_link = mysqli_connect($db_host, $db_user, $db_pass);
 
-	if (!($db_link = mysql_connect($db_host, $db_user, $db_pass, true))) 
+	if (mysqli_connect_errno()) 
 		{
-		print "Problem connecting to database [$db_user:db_pass@$db_host]: " . mysql_error();
+		print "Problem connecting to database [$db_user:***@$db_host]: " . mysqli_connect_error();
 		return;
 		}
 	//select the right database
-	if (!($db_selected = mysql_select_db($db_database, $db_link))) 
+	if (!($db_selected = mysqli_select_db($db_link, $db_database))) 
 		{
-		print 'Problem selecting database: ' . mysql_error();
+		print 'Problem selecting database: ' . mysqli_error($db_link);
 		return;
 		}
 	return $db_link;
@@ -75,27 +77,27 @@ function hopdb_field_limits($user='')
 
 function hopdb_query($q)
 	{
-	if (!hopdb()) return;
-	if (!($r = @mysql_query($q, hopdb()))) wp_die("Error in SQL: $q");
+	if (!($link = hopdb())) return;
+	if (!($r = mysqli_query($link, $q))) wp_die("Error in SQL [$q]: " . mysqli_error($link));
 	return $r;
 	}
 
-function hopdb_record_count($r)	{	return @mysql_num_rows($r);	}
-function hopdb_fetch_assoc($r)	{	return mysql_fetch_assoc($r);	}
-function hopdb_free_result($r)	{	@mysql_free_result($r); return true;	}
+function hopdb_record_count($r)	{	return @mysqli_num_rows($r);	}
+function hopdb_fetch_assoc($r)	{	return mysqli_fetch_assoc($r);	}
+function hopdb_free_result($r)	{	@mysqli_free_result($r); return true;	}
 
 function hopdb_execute($q)
 	{
 	if (!hopdb()) return;
-	if (!($r = @mysql_query($q, hopdb()))) wp_die("Error in SQL: $q");
-//	mysql_free_result($r);
+	if (!($r = @mysqli_query($q, hopdb()))) wp_die("Error in SQL: $q");
+//	mysqli_free_result($r);
 	return true;
 	}
 
 function hopdb_query_row($q)
 	{
-	if (!($r = mysql_query($q, hopdb()))) die("Error in SQL: $q");
-	$row = mysql_fetch_assoc($r);
+	if (!($r = mysqli_query($q, hopdb()))) die("Error in SQL: $q");
+	$row = mysqli_fetch_assoc($r);
 	return $row;
 	}
 
@@ -103,7 +105,7 @@ function get_hop_row($id, $user='')	{	return hopdb_query_row("SELECT * FROM ".$u
 function get_hops($st="", $user='')	{	return hopdb_query("SELECT * FROM ".$user."hoplist".($st==""?"":" WHERE State='$st'")." ORDER BY State, Country, Name"); }
 function get_user_hop_row($id)		{	return get_hop_row($id,"user");	}
 function get_user_hops() 			{	return get_hops("", "user");	}
-function get_hop_count($st="", $user='')	{	$r = get_hops('', $user); $x = mysql_num_rows($r); mysql_free_result($r); return $x;	}
+function get_hop_count($st="", $user='')	{	$r = get_hops('', $user); $x = mysqli_num_rows($r); mysqli_free_result($r); return $x;	}
 
 function hopdb_insert($row, $user='')
 	{
@@ -167,10 +169,10 @@ function hopdb_getpost()
 
 function hopdb_rowvalid($row, &$msg="")
 	{
-	if ($row[Name]=="") {$msg = "You must enter a name."; return false;}
-	if ($row[Country]=="") {$msg = "Country is a required field."; return false;}
-	if ($row[Country]=="United States" && $row[State]=="") {$msg = "Please enter a US State."; return false;}
-	if ($row[Website]=="" && $row[Phone]=="" && $row[Email]=="")
+	if ($row['Name']=="") {$msg = "You must enter a name."; return false;}
+	if ($row['Country']=="") {$msg = "Country is a required field."; return false;}
+	if ($row['Country']=="United States" && $row['State']=="") {$msg = "Please enter a US State."; return false;}
+	if ($row['Website']=="" && $row['Phone']=="" && $row['Email']=="")
 		 {$msg = "You must enter either a website, phone number, or email address."; return false;}
 	return true;
 	}
@@ -268,5 +270,3 @@ function hopdb_integrate($row)
 	hopdb_query("DELETE FROM userhoplist WHERE ID=$row[ID]");
 	return true;
 	}
-
-?>
