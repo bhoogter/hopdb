@@ -98,7 +98,7 @@ function hopdb_category_select($name="Category",$cat="")
 	$s = $s . "</select>\n";
 	return $s;
 	}
-
+	
 function hopdb_entry_form($row, $mode="")
 	{
 	if ($row == null) $row = array();
