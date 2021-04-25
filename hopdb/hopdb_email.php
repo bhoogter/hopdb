@@ -121,12 +121,12 @@ function hopdb_get_letter($id, $subject)
 
 	$editlink = site_url()."/index.php/home/edit?id=$id";
 
-	$site_listing = $row[Name]."\nAddress: ".$row[Address]."\nCity: ".$row[City].", ".$row[State].' '.$row[Country]."\nDirector: ".$row[Director]."\nEmail: ".$row[Email]."\nPhone: ".$row[Phone]."\nWebsite: ".$row[Website]."\n\n".$row[Description]."\n";
-	$locate = site_url()."?state=".$row[State]."#L".$row[ID];
+	$site_listing = $row['Name']."\nAddress: ".$row['Address']."\nCity: ".$row['City'].", ".$row['State'].' '.$row['Country']."\nDirector: ".$row['Director']."\nEmail: ".$row[Email]."\nPhone: ".$row[Phone]."\nWebsite: ".$row['Website']."\n\n".$row['Description']."\n";
+	$locate = site_url()."?state=".$row['State']."#L".$row['ID'];
 
 	$letter = str_replace(
 array( '#hopname',    '#password',     '#editlink',   '#email',         '#site',     '#admin',          '#listing',   '#locate',   '#contact'),
-array( $row[Name],    $row[Password],  $editlink,     hopdb_contact(),  site_url(),  hopdb_adminname(), $site_listing, $locate,    hopdb_contact()),
+array( $row['Name'],    $row['Password'],  $editlink,     hopdb_contact(),  site_url(),  hopdb_adminname(), $site_listing, $locate,    hopdb_contact()),
 $letter
 );
 
@@ -194,7 +194,7 @@ function hopdb_email($id, $subject, $to='')
 function hopdb_automailer_toid($id, $subject="Information Update")
 	{
 	if (!($row = get_hop_row($id))) return;
-	if (!($em = $row[Email])) return;
+	if (!($em = @$row['Email'])) return;
 //$em = "benjaminhoogterp@gmail.com";
 	hopdb_email($id, $subject, $em);
 	return true;
@@ -206,8 +206,8 @@ function hopdb_automailer()
 	$a = 1;
 	$b = 2000;
 
-	if ($_GET[amail_min]>1) $a = $_GET[amail_min];
-	if ($_GET[amail_max]>0) $b = $_GET[amail_max];
+	if (@$_GET['amail_min']>1) $a = @$_GET['amail_min'];
+	if (@$_GET['amail_max']>0) $b = @$_GET['amail_max'];
 
 
 	for($i=$a;$i<=$b;$i++)
@@ -218,4 +218,3 @@ function hopdb_automailer()
 	return "$n message(s) sent.";
 	}
 
-?>

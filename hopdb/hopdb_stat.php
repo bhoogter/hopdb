@@ -2,21 +2,23 @@
 
 function hopdb_shortcode_stat($atts)	
 	{
+        $w = "";
 		$r = hopdb_query("SELECT * FROM hoplist");
 		$total_count = hopdb_record_count($r);
 		hopdb_free_result($r);
 
 		$r = hopdb_query("SELECT Country, COUNT(ID) AS Cnt FROM hoplist GROUP BY Country");
+        $total_other = 0;
 		while($row = hopdb_fetch_assoc($r))
 			{
 //print "<br/>$row[Country]=$row[Cnt]\n";
-			if ($row[Country]=="United States") 
+			if ($row['Country']=="United States") 
 				{
-				$total_usa = $row[Cnt];
+				$total_usa = $row['Cnt'];
 				continue;
 				}
-			if ($row[Country]=="Canada") {$total_canada = $row[Cnt];continue;}
-			$total_other = $total_other + $row[Cnt];
+			if ($row['Country']=="Canada") {$total_canada = $row['Cnt'];continue;}
+			$total_other = $total_other + $row['Cnt'];
 			}
 		hopdb_free_result($r);
 
@@ -27,14 +29,15 @@ function hopdb_shortcode_stat($atts)
 		while($row = hopdb_fetch_assoc($r))
 			{
 //print "<br/>$row[State]=$row[Cnt]\n";
-			if ($row[Cnt] > $most) {$most = $row[Cnt]; $mostnm = $row[State];}
-			if ($row[Cnt] < $least) {$least = $row[Cnt]; $leastnm = $row[State];}
-			if ($row[State] <> "") $states[$row[State]] = $row[Cnt];
+			if ($row['Cnt'] > $most) {$most = $row['Cnt']; $mostnm = $row['State'];}
+			if ($row['Cnt'] < $least) {$least = $row['Cnt']; $leastnm = $row['State'];}
+			if ($row['State'] <> "") $states[$row['State']] = $row['Cnt'];
 			}
 //print "<br/>st: ";print_r($states);
 		hopdb_free_result($r);
 
 
+        $instance = [];
 		$title = apply_filters('widget_title', $instance['title'] );
 		$sCnt =  isset( $instance['countries'] ) ? true : false;
 		$sLMS =  isset( $instance['leastmost'] ) ? true : false;
@@ -42,7 +45,7 @@ function hopdb_shortcode_stat($atts)
 
 ///////   Our Widget Display code
 		$w = $w . "<b>Total HoPs:</b> $total_count<br/>\n";
-		if (sCnt)
+		if ($sCnt)
 			{
 			$w = $w . "<span style='margin-left:10px;'><b>USA:</b> $total_usa</span><br/>\n";
 			if ($total_canada>0) $w = $w . "<span style='margin-left:10px;'><b>Canada:</b> $total_canada</span><br/>\n";
@@ -66,4 +69,3 @@ function hopdb_shortcode_stat($atts)
 	print $w;
 	}
 
-?>

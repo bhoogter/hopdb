@@ -2,10 +2,10 @@
 
 function hopdb_import()
 	{
-	if ($_REQUEST['luke18']!='') return hopdb_import_luke18();
-	if ($_REQUEST['burn247']!='') return hopdb_import_burn247();
+	if (@$_REQUEST['luke18']!='') return hopdb_import_luke18();
+	if (@$_REQUEST['burn247']!='') return hopdb_import_burn247();
 
-	$l = $_REQUEST['urls'];
+	$l = @$_REQUEST['urls'];
 
 	$s = "";
 	$s = $s . "<table style='border: solid 1px black;'><tr>\n";
@@ -91,8 +91,8 @@ function hopdb_import_curl($u)
 function hopdb_check_url_by_id($id)
 	{
 	$r = get_hop_row($id);
-	if (!r) die("!No row for ID $id.");
-	if (!($u=$r[Website])) die("+No Website for ID $id.");
+	if (!$r) die("!No row for ID $id.");
+	if (!($u=$r['Website'])) die("+No Website for ID $id.");
 
 	$ch = curl_init();
 	curl_setopt ($ch, CURLOPT_URL, $u);
@@ -135,11 +135,11 @@ $direct_import = true;
 	foreach($r->fetch_list("//markers/marker/@name") as $a)
 		{
 		$row = array();
-		$row[Name] = $a;
-		$row[City] = $r->fetch_part("//markers/marker[@name=\"$a\"]/@city");
-		$row[State] = $r->fetch_part("//markers/marker[@name=\"$a\"]/@state");
-		$row[Country] = "United States";
-		$row[Category] = "Luke18Project";
+		$row['Name'] = $a;
+		$row['City'] = $r->fetch_part("//markers/marker[@name=\"$a\"]/@city");
+		$row['State'] = $r->fetch_part("//markers/marker[@name=\"$a\"]/@state");
+		$row['Country'] = "United States";
+		$row['Category'] = "Luke18Project";
 
 		$d = $r->fetch_part("//markers/marker[@name=\"$a\"]/@contact_info");
 		$D = str_replace(array("<br>","<br/>","<br />"), array("\n","\n","\n"), $d);
@@ -147,12 +147,12 @@ $direct_import = true;
 		foreach(split("\n", $D) as $dd)
 			{
 			$dd = trim($dd);
-			if (preg_match(">\b([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4})\b>i", $dd)==1) {$row[Email]=$dd;continue;}
-			if (substr($dd, 0, 7) == "http://") {$row[Website]=$dd;continue;}
-			if (substr($dd, 0, 4) == "www.") {$row[Website]=$dd;continue;}
+			if (preg_match(">\b([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4})\b>i", $dd)==1) {$row['Email']=$dd;continue;}
+			if (substr($dd, 0, 7) == "http://") {$row['Website']=$dd;continue;}
+			if (substr($dd, 0, 4) == "www.") {$row['Website']=$dd;continue;}
 			$od = $od . (strlen($od)>0?"\n":"") . $dd;
 			}
-		$row[Description] = $od;
+		$row['Description'] = $od;
 
 		$user = "";
 		if (!$direct_import) $user = "user";
