@@ -203,7 +203,7 @@ function hopdb_state($st)
 //print "<br/>".hopdb_plugin_dir("/links/".$t);
 			if (strstr($t, "/")===false) 
 				{
-				if ($size = getimagesize(hopdb_plugin_dir("/links/".$t))) $w = $size[0];
+				if ($size = @getimagesize(hopdb_plugin_dir("/links/".$t))) $w = $size[0];
 				$t = hopdb_plugin_url("/links/$t");
 				}
 //			$t = hopdb_plugin_url("/timthumb.php?w=200&zc=1&src=$t");
