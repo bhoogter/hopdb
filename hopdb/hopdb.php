@@ -71,6 +71,7 @@ add_shortcode( 'hopdb-find', 'hopdb_shortcode_find_hook' );
 add_shortcode( 'hopdb-submit', 'hopdb_shortcode_submit_hook' );
 add_shortcode( 'hopdb-useredit', 'hopdb_shortcode_useredit_hook' );
 add_shortcode( 'hopdb-stats', 'hopdb_shortcode_stats_hook' );
+add_shortcode( 'hopdb-google-map', 'hopdb_shortcode_google_map_hook' );
 add_shortcode( 'hopdb-contact', 'hopdb_contact_hook' );
 add_action('admin_menu', 'hopdb_admin_menu');
 add_action('admin_bar_menu', 'hopdb_admin_bar_menu', 40);
@@ -242,6 +243,7 @@ function hopdb_shortcode_find_hook($atts)		{	include_once("hopdb_find.php"); ret
 function hopdb_shortcode_submit_hook($atts)	{	include_once("hopdb_edit.php"); return hopdb_shortcode_submit($atts);	}
 function hopdb_shortcode_useredit_hook($atts)	{	include_once("hopdb_edit.php"); return hopdb_shortcode_useredit($atts);	}
 function hopdb_shortcode_stats_hook($atts)	{	include_once("hopdb_stat.php"); return hopdb_shortcode_stat($atts);	}
+function hopdb_shortcode_google_map_hook($atts)	{	include_once("hopdb_google_map.php"); return hopdb_shortcode_google_map($atts);	}
 function hopdb_contact_hook($atts)			{	include_once("hopdb_contactlist.php"); return hopdb_shortcode_contact($atts);	}
 
 function hopdb_widgets_init()			{	include_once("hodpb_class_hopdb_status_widget.php"); register_widget( 'hopdb_status_widget' );	}

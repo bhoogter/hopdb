@@ -6,37 +6,36 @@
 
 
 function hopdb_address_lookup($s)
-	{
-	$b = "http://maps.google.com/maps/api/geocode/xml?address=" . urlencode($s) . "&sensor=false";
-//wp_die($b);
-	$ch = curl_init();
-	curl_setopt ($ch, CURLOPT_URL, $b);
-	curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 10);
-	$st = curl_exec($ch);
-	curl_close($ch);
+{
+    $apiKey = "AIzaSyBssW3WZZck5Wr65GC_GHbTOuVSMYndv2E";
+    $address = urlencode($s);
 
-//wp_die($st);
-	if (strstr($st, 'REQUEST_DENIED') !== false) return '';
-	if (strstr($st, 'ZERO_RESULTS') !== false) return '';
-	if (strstr($st, 'INVALID_REQUEST') !== false) return '';
+    $b = "https://maps.googleapis.com/maps/api/geocode/json?address=$address&key=$apiKey";
+// wp_die($b);
 
-	$x = strpos($st, "<location>") + 10;
-	$y = strpos($st, "</location>");
-	$z = substr($st, $x, $y - $x);
-//wp_die($z);
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $b);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+    $st = curl_exec($ch);
+    curl_close($ch);
+// wp_die($st);
 
-	$x = strpos($z, "<lat>") + 5;
-	$y = strpos($z, "</lat>");
-	$A = substr($z, $x, $y - $x);
+    $result = json_decode($st, true);
+// print_r($result);wp_die("...");
+// wp_die(print_r($result['results'][0]['geometry']['location'], true));
+// print_r($result['results'][0]['location']);wp_die("...");
+    if (@$result['status'] != "OK") return '';
+// wp_die(print_r($result['results'][0]['geometry']['location'], true));
+    if (
+        !@$result['results'] ||
+        !@$result['results'][0] ||
+        !@$result['results'][0]['geometry'] ||
+        !@$result['results'][0]['geometry']['location']
+    ) return '';
 
-	$x = strpos($z, "<lng>") + 5;
-	$y = strpos($z, "</lng>");
-	$O = substr($z, $x, $y - $x);
-
-	$res = trim(trim($O) . "," . trim($A));
-//wp_die($res);
-	return $res;
-	}
-
-?>
+// wp_die('vound');
+    $location = "" . @$result['results'][0]['geometry']['location']['lat'] . "," . @$result['results'][0]['geometry']['location']['lng'];
+// wp_die($location);
+    return $location;
+}
