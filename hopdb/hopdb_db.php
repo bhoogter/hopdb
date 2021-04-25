@@ -88,15 +88,16 @@ function hopdb_free_result($r)	{	@mysqli_free_result($r); return true;	}
 
 function hopdb_execute($q)
 	{
-	if (!hopdb()) return;
-	if (!($r = @mysqli_query($q, hopdb()))) wp_die("Error in SQL: $q");
+	if (!($link = hopdb())) return;
+	if (!($r = @mysqli_query($link, $q))) wp_die("Error in SQL: $q");
 //	mysqli_free_result($r);
 	return true;
 	}
 
 function hopdb_query_row($q)
 	{
-	if (!($r = mysqli_query($q, hopdb()))) die("Error in SQL: $q");
+	if (!($link = hopdb())) return;
+	if (!($r = mysqli_query($link, $q))) die("Error in SQL: $q");
 	$row = mysqli_fetch_assoc($r);
 	return $row;
 	}
@@ -270,3 +271,4 @@ function hopdb_integrate($row)
 	hopdb_query("DELETE FROM userhoplist WHERE ID=$row[ID]");
 	return true;
 	}
+
