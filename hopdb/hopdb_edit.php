@@ -105,12 +105,19 @@ function hopdb_entry_form($row, $mode="")
 	$s = "";
 
 	if (hopdb_msg()!="") $s = $s . hopdb_msg();
-	if ($_REQUEST['added']) $s = $s . hopdb_msg_style(1,false,"<h5>Added Listing for ${_REQUEST['added']}</h5>");
+	if ($_REQUEST['added']) {
+	    $k = "<h5>Added Listing for ${_REQUEST['added']}</h5>";
+	    if (function_exists("hopdb_msg_style")) $k = hopdb_msg_style(1,false, $k);
+	    $s = $s . $k;
+	}
 
 	switch($mode)
 		{
 		case "usersubmission":		$s = $s . "<h2>Submit a new House of Prayer</h2>\n";break;
-		case "useredit":			$s = $s . "<h2>User Edit HoP</h2>\n".hopdb_msg_syle(401,false,"<h6>If this is your listing, you will need a password to edit these changes.  Please contact us for your password.</h6>");break;
+		case "useredit":			
+		    $k = "<h6>If this is your listing, you will need a password to edit these changes.  Please contact us for your password.</h6>";
+//		    if (function_exists("hopdb_msg_style")) $k = hopdb_msg_syle(401, false, $k);
+		    $s = $s . "<h2>User Edit HoP</h2>\n".$k;break;
 		case "review":			$s = $s . "<h2>HoP for Review</h2>\n";break;
 		case "add":				$s = $s . "<h2>Admin Add HoP</h2>\n";break; 
 		case "edit":				$s = $s . "<h2>Admin Edit HoP</h2>\n";break;
