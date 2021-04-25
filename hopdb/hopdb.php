@@ -36,10 +36,10 @@ function hopdb_plugin_url($q="")		{	return WP_PLUGIN_URL."/".dirname(plugin_base
 function hopdb_plugin_dir($q="")		{	return dirname(__FILE__).$q;	}
 function hopdb_current_url($qs="qs")	//{	return "http://".$_SERVER[HTTP_HOST].$_SERVER[SCRIPT_NAME].($qs=="qs"&&$_SERVER[QUERY_STRING]!=""?"?".$_SERVER[QUERY_STRING]:($qs=="qs"?"":$qs));	}
 	{
-	$x = "http://".$_SERVER[HTTP_HOST].$_SERVER[SCRIPT_NAME];
+	$x = "http://".$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
 	if ($qs == "qs")
 		{
-		$x = $_SERVER[REQUEST_URI];
+		$x = $_SERVER['REQUEST_URI'];
 		}
 	else
 		$x = $x . $qs;
@@ -253,3 +253,5 @@ if ($_REQUEST['HOPDB_URL']!='')	{include_once("hopdb_import.php");hopdb_check_ur
 if ($_REQUEST['HOPDB_EMAIL']!='')	{global $hopdb_message; include_once("hopdb_email.php"); $hopdb_message=hopdb_email($_REQUEST[hopid], $_REQUEST[letter], $_REQUEST[email])?"Message Sent.":"Message Failed."; }
 if ($_REQUEST['HOPDB_AMAIL']!='')	{global $hopdb_message; include_once("hopdb_email.php"); $hopdb_message=hopdb_automailer(); }
 
+
+	
