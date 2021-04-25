@@ -2,7 +2,12 @@
 
 class hopdb_status_widget extends WP_Widget 
 	{
-	function hopdb_status_widget() 
+
+    public function hopdb_status_widget() {
+        $this->__construct();
+    }
+
+	function __construct() 
 		{
 		$widget_ops = array( 
 			'classname' => 'hopdb_status', 

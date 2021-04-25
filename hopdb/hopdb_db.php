@@ -15,7 +15,8 @@ function hopdb()
 //	$db_host = "localhost";
 //	$db_database = "churchu8_ihop";
 
-	if ($db_link != 0) return $db_link;
+	// if ($db_link != 0) return $db_link;
+	if (!!$db_link) return $db_link;
 //print "<br/>user=$db_user, pass=$db_pass, host=$db_host, db=$db_database";
     
     $db_link = mysqli_connect($db_host, $db_user, $db_pass);
@@ -164,7 +165,7 @@ function hopdb_update($row, $user='')
 function hopdb_getpost()
 	{
 	$r = array();
-	foreach(hopdb_fields() as $a) $r[$a] = $_REQUEST[$a];
+	foreach(hopdb_fields() as $a) $r[$a] = @$_REQUEST[$a];
 	return $r;
 	}
 

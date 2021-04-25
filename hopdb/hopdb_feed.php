@@ -45,28 +45,28 @@ function hopdb_kml()
 		}
 
 	$r = get_hops();
-	while ($row = mysql_fetch_assoc($r))
+	while ($row = mysqli_fetch_assoc($r))
 		{
-		$l = $row[City] . ", " . ($row[State]!=""?$row[State]:$row[Country]);
-		$a = $row[Address] . ", " . $row[Address2] . ", " . $l;
+		$l = $row['City'] . ", " . ($row['State']!=""?$row['State']:$row['Country']);
+		$a = $row['Address'] . ", " . $row['Address2'] . ", " . $l;
 
 		$d = "";
-		$d = $d . $row[Name] . "<br/>\n";
-		$d = $d . $row[Website]. " <br/>\n";
+		$d = $d . $row['Name'] . "<br/>\n";
+		$d = $d . $row['Website']. " <br/>\n";
 		$d = $d . "Location: $l<br/>\n";
-		if ($row[Director]!="") $d = $d . "Director: $row[Director]<br/>\n";
-		if ($row[Email]!="") $d = $d . "Email: $row[Email]<br/>\n";
-		if ($row[Phone]!="") $d = $d . "Phone: $row[Phone]<br/>\n";
+		if ($row['Director']!="") $d = $d . "Director: $row[Director]<br/>\n";
+		if ($row['Email']!="") $d = $d . "Email: $row[Email]<br/>\n";
+		if ($row['Phone']!="") $d = $d . "Phone: $row[Phone]<br/>\n";
 		$d = $d . "<br/>\n";
-		$d = $d . $row[Description];
+		$d = $d . $row['Description'];
 
-		$s = $s . "  <Placemark id='$row[ID]'>\n";
-		$s = $s . "    <name>".utf8_decode(hopdb_kml_encode($row[Name]))."</name>\n";
+		$s = $s . "  <Placemark id='${row['ID']}'>\n";
+		$s = $s . "    <name>".utf8_decode(hopdb_kml_encode($row['Name']))."</name>\n";
 		$s = $s . "    <styleUrl>#$row[Category]</styleUrl>\n";
-		if ($row[Position]=='')
+		if ($row['Position']=='')
 			$s = $s . "    <address>".hopdb_kml_encode($a)."</address>\n";
 		else
-			$s = $s . "    <Point>\n      <coordinates>$row[Position]</coordinates>\n    </Point>\n";
+			$s = $s . "    <Point>\n      <coordinates>${row['Position']}</coordinates>\n    </Point>\n";
 
 		$s = $s . "    <description><![CDATA[".utf8_decode($d)."]]></description>\n";
 		$s = $s . "  </Placemark>\n";
@@ -84,7 +84,7 @@ function hopdb_xml()
 	$s = $s . "<hopdb>\n";
 
 	$r = get_hops();
-	while ($row = mysql_fetch_assoc($r))
+	while ($row = mysqli_fetch_assoc($r))
 		{
 		$s = $s . " <hop id='$row[ID]'>\n";
 		foreach(hopdb_fields() as $a)
@@ -101,4 +101,3 @@ function hopdb_xml()
 	$s = $s . "</hopdb>\n";
 	return $s;
 	}
-?>

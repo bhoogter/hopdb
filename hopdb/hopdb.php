@@ -39,7 +39,7 @@ function hopdb_current_url($qs="qs")	//{	return "http://".$_SERVER[HTTP_HOST].$_
 	$x = "http://".$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
 	if ($qs == "qs")
 		{
-		$x = $_SERVER['REQUEST_URI'];
+		$x = @$_SERVER['REQUEST_URI'];
 		}
 	else
 		$x = $x . $qs;
@@ -246,12 +246,12 @@ function hopdb_contact_hook($atts)			{	include_once("hopdb_contactlist.php"); re
 
 function hopdb_widgets_init()			{	include_once("hodpb_class_hopdb_status_widget.php"); register_widget( 'hopdb_status_widget' );	}
 
-if ($_POST['hopdb_form']!="") 	{global $hopdb_message; include_once("hopdb_edit.php"); $hopdb_message = hopdb_save();	}
-if ($_REQUEST['HOPDB_KML']!='')	{include_once("hopdb_feed.php");header ("Content-Type:text/xml");print hopdb_kml();die();	}
-if ($_REQUEST['HOPDB_XML']!='')	{include_once("hopdb_feed.php");header ("Content-Type:text/xml");print hopdb_xml();die();	}
-if ($_REQUEST['HOPDB_URL']!='')	{include_once("hopdb_import.php");hopdb_check_url_by_id($_REQUEST['HOPDB_URL']);	}
-if ($_REQUEST['HOPDB_EMAIL']!='')	{global $hopdb_message; include_once("hopdb_email.php"); $hopdb_message=hopdb_email($_REQUEST[hopid], $_REQUEST[letter], $_REQUEST[email])?"Message Sent.":"Message Failed."; }
-if ($_REQUEST['HOPDB_AMAIL']!='')	{global $hopdb_message; include_once("hopdb_email.php"); $hopdb_message=hopdb_automailer(); }
+if (@$_POST['hopdb_form']!="") 	{global $hopdb_message; include_once("hopdb_edit.php"); $hopdb_message = hopdb_save();	}
+if (@$_REQUEST['HOPDB_KML']!='')	{include_once("hopdb_feed.php");header ("Content-Type:text/xml");print hopdb_kml();die();	}
+if (@$_REQUEST['HOPDB_XML']!='')	{include_once("hopdb_feed.php");header ("Content-Type:text/xml");print hopdb_xml();die();	}
+if (@$_REQUEST['HOPDB_URL']!='')	{include_once("hopdb_import.php");hopdb_check_url_by_id($_REQUEST['HOPDB_URL']);	}
+if (@$_REQUEST['HOPDB_EMAIL']!='')	{global $hopdb_message; include_once("hopdb_email.php"); $hopdb_message=hopdb_email($_REQUEST['hopid'], $_REQUEST['letter'], $_REQUEST['email'])?"Message Sent.":"Message Failed."; }
+if (@$_REQUEST['HOPDB_AMAIL']!='')	{global $hopdb_message; include_once("hopdb_email.php"); $hopdb_message=hopdb_automailer(); }
 
 
 	
