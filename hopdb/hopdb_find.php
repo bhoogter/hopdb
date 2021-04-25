@@ -258,21 +258,24 @@ function hopdb_user_list()
 	$s = $s . "<li><hr/><h3>International</h3></li>\n";
 	while ($row = mysqli_fetch_assoc($r)) 
 		{
-		$c = $row[Country];
+		$c = $row['Country'];
 		$inter = $c!="United States";
 		$cc = strtolower(hopdb_country_code($c));
-		if ($st!=$row[State])
+		if ($st!=$row['State'])
 			{
-			$st = $row[State];
+			$st = $row['State'];
 			$s = $s . "<li><hr/><h3>".hopdb_state_name($st)."</h3></li>\n";
 			}
 		$s = $s . "  <li>";
-		if ($row[Website]!="") $s = $s . "<a href='$row[Website]'>";
+		if ($row['Website']!="") $s = $s . "<a href='" . $row['Website'] . "'>";
 		if ($inter && $cc != "") $s = $s . "<img width='16' height='11' src='".hopdb_plugin_url("/images/countries/$cc.png")."' alt='$c' title='$c' />\n";
-		$s = $s . "$row[Name] - $row[City], ".($inter ? $row[Country] : $row[State]);
-		if ($row[Website]!="") $s = $s . "</a>";
+		$s = $s . "$row[Name] - $row[City], ".($inter ? $row['Country'] : $row['State']);
+		if ($row['Website']!="") $s = $s . "</a>";
 		$s = $s . "</li>\n";
 		}
 	$s = $s . "</ul>\n";
 	return $s;
 	}
+
+
+?>
