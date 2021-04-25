@@ -9,16 +9,16 @@ function hopdb_shortcode_google_map($atts)
     $s = "<style>
     #map {
      height: 500px;
-     width: 600px;
+     width: 800px;
      overflow: hidden;
-     float: left;
+    //  float: left;
      border: thin solid #333;
      }
     #capture {
      height: 500;
-     width: 600px;
+     width: 800px;
      overflow: hidden;
-     float: left;
+    //  float: left;
      background-color: #ECECFB;
      border: thin solid #333;
      border-left: none;
@@ -30,7 +30,7 @@ function hopdb_shortcode_google_map($atts)
         
     $s .= "<script>
         var map;
-        var src = 'http://www.ihopnetwork.com/wp-content/plugins/hopdb/ihopnetwork.kml';
+
   
         function initMap() {
           map = new google.maps.Map(document.getElementById('map'), {
@@ -39,9 +39,11 @@ function hopdb_shortcode_google_map($atts)
             mapTypeId: 'terrain'
           });
   
-          var kmlLayer = new google.maps.KmlLayer(src, {
-            suppressInfoWindows: true,
-            preserveViewport: false,
+        var src = 'http://www.ihopnetwork.com/wp-content/plugins/hopdb/ihopnetwork.3.kml';
+        console.log(src);
+        var kmlLayer = new google.maps.KmlLayer(src, {
+            suppressInfoWindows: false,
+            preserveViewport: true,
             map: map
           });
           console.dir(kmlLayer);

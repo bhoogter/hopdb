@@ -22,8 +22,9 @@ function hopdb_do_write_feeds()
     $xmlFile = hopdb_feed_file("xml");
     $kmlFile = hopdb_feed_file("kml");
     $kmzFile = hopdb_feed_file("kmz");
-    file_put_contents($kmlFile, hopdb_kml());
-    file_put_contents($xmlFile, hopdb_xml());
+    file_put_contents($kmlFile, utf8_encode(hopdb_kml()));
+    copy($kmlFile, hopdb_feed_file("3.kml"));
+    file_put_contents($xmlFile, utf8_encode(hopdb_xml()));
 
     if (function_exists("gzencode")) {
         file_put_contents($kmzFile, gzencode(file_get_contents($kmlFile), 9));
