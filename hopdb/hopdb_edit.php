@@ -42,7 +42,7 @@ function hopdb_hop_list()
 		$k = $row['Name']." - ".$row['City'].", ".$row['State'];
 		$k = $k . ($row['Country']=="United States"?"":$row['Country']);
 		$l = "<img src='" . hopdb_plugin_url("/images/feed/".hopdb_category_icon($row['Category'])) . "' width=8 height=8 />";
-		$s = $s . " <li><a href='?id=$row['ID']&page=edithop'>$k</a>$l</li>\n";
+		$s = $s . " <li><a href='?id=${row['ID']}&page=edithop'>$k</a>$l</li>\n";
 		}
 	$s = $s . "</ul>\n";
 	return $s;
@@ -137,12 +137,12 @@ function hopdb_entry_form($row, $mode="")
 	$s = $s . "  <tr><td>Zip:</td><td><input type='text' name='Zip' size='10' value=\"{$row['Zip']}\" /></td></tr>\n";
 	$ctry = $row['Country'] == "" ? "United States" : $row['Country'];
 	$s = $s . "  <tr><td>Country:</td><td><input type='text' name='Country' id='Country' size='20' value=\"$ctry\" />".hopdb_country_selector("document.hopform.Country")."</td></tr>\n";
-	$s = $s . "  <tr><td>Graphic:</td><td><input type='text' name='Graphic' size='50' value=\"$row['Graphic']\" /></td></tr>\n";
+	$s = $s . "  <tr><td>Graphic:</td><td><input type='text' name='Graphic' size='50' value=\"${row['Graphic']}\" /></td></tr>\n";
 	if ($mode == "edit" && $row['Email'] != "")
 		$eml = "<a href='" . hopdb_current_url("?page=hopdbformletters&id=" . $_REQUEST['id'] . "&e=" . urlencode($row['Email'])) . "'><img src='" . hopdb_plugin_url('/images/menu/email_go.png') . "' width='15' height='15'/></a>";
 	else
 		$eml = "";
-	$s = $s . "  <tr><td>Email:</td><td><input type='text' name='Email' size='50' value=\"$row['Email']\" /> $eml</td></tr>\n";
+	$s = $s . "  <tr><td>Email:</td><td><input type='text' name='Email' size='50' value=\"${row['Email']}\" /> $eml</td></tr>\n";
 	$open = (''.$row['Website'])!='' ? " <a href='${row['Website']}' target='_new'><img src='".hopdb_plugin_url('/images/world_go.png')."' width='16' height='16'></a>" : "";
 	$s = $s . "  <tr><td>Website:</td><td><input type='text' name='Website' size='50' value=\"${row['Website']}\" />$open</td></tr>\n";
 	$s = $s . "  <tr><td>Phone:</td><td><input type='text' name='Phone' size='15' value=\"${row['Phone']}\" /></td></tr>\n";
@@ -221,7 +221,7 @@ function hopdb_notify_submission($row)
 	$recip = get_option("HOPDB_contact");
 	if ($recip=="") return false;
 	$headers = 'From: IHOPNetwork.com <submission@ihopnetwork.com>' . "\r\n";
-	$subject = "HOPDB Submission: $row['Name']";
+	$subject = "HOPDB Submission: ${row['Name']}";
 	$body = "
 New HOP Database Submission
 Name: ${row['Name']}
