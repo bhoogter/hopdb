@@ -39,10 +39,10 @@ function hopdb_hop_list()
 			$st = $row['State'];
 			$s = $s . "<li><hr/><h3>".hopdb_state_name($st)."</h3></li>\n";
 			}
-		$k = $row['Name']." - ".$row[City].", ".$row['State'];
+		$k = $row['Name']." - ".$row['City'].", ".$row['State'];
 		$k = $k . ($row['Country']=="United States"?"":$row['Country']);
 		$l = "<img src='" . hopdb_plugin_url("/images/feed/".hopdb_category_icon($row['Category'])) . "' width=8 height=8 />";
-		$s = $s . " <li><a href='?id=$row[ID]&page=edithop'>$k</a>$l</li>\n";
+		$s = $s . " <li><a href='?id=$row['ID']&page=edithop'>$k</a>$l</li>\n";
 		}
 	$s = $s . "</ul>\n";
 	return $s;
@@ -84,7 +84,7 @@ function hopdb_choosestate()
 	$s = $s . "<table>\n";
 	$s = $s . "  <tr><td>Please Choose a State:</td><td>".hopdb_state_select("state")."<input type='submit'/></td></tr>\n";
 	$s = $s . "</table>\n";
-	$s = $s . "<input type='hidden' name='page' value='$_REQUEST[page]' />";
+	$s = $s . "<input type='hidden' name='page' value='${_REQUEST[page]}' />";
 	$s = $s . "</form>\n";
 	return $s;
 	}
@@ -137,13 +137,13 @@ function hopdb_entry_form($row, $mode="")
 	$s = $s . "  <tr><td>Zip:</td><td><input type='text' name='Zip' size='10' value=\"{$row['Zip']}\" /></td></tr>\n";
 	$ctry = $row['Country'] == "" ? "United States" : $row['Country'];
 	$s = $s . "  <tr><td>Country:</td><td><input type='text' name='Country' id='Country' size='20' value=\"$ctry\" />".hopdb_country_selector("document.hopform.Country")."</td></tr>\n";
-	$s = $s . "  <tr><td>Graphic:</td><td><input type='text' name='Graphic' size='50' value=\"$row[Graphic]\" /></td></tr>\n";
+	$s = $s . "  <tr><td>Graphic:</td><td><input type='text' name='Graphic' size='50' value=\"$row['Graphic']\" /></td></tr>\n";
 	if ($mode == "edit" && $row['Email'] != "")
 		$eml = "<a href='" . hopdb_current_url("?page=hopdbformletters&id=" . $_REQUEST['id'] . "&e=" . urlencode($row['Email'])) . "'><img src='" . hopdb_plugin_url('/images/menu/email_go.png') . "' width='15' height='15'/></a>";
 	else
 		$eml = "";
-	$s = $s . "  <tr><td>Email:</td><td><input type='text' name='Email' size='50' value=\"$row[Email]\" /> $eml</td></tr>\n";
-	$open = (''.$row['Website'])!='' ? " <a href='$row[Website]' target='_new'><img src='".hopdb_plugin_url('/images/world_go.png')."' width='16' height='16'></a>" : "";
+	$s = $s . "  <tr><td>Email:</td><td><input type='text' name='Email' size='50' value=\"$row['Email']\" /> $eml</td></tr>\n";
+	$open = (''.$row['Website'])!='' ? " <a href='${row['Website']}' target='_new'><img src='".hopdb_plugin_url('/images/world_go.png')."' width='16' height='16'></a>" : "";
 	$s = $s . "  <tr><td>Website:</td><td><input type='text' name='Website' size='50' value=\"${row['Website']}\" />$open</td></tr>\n";
 	$s = $s . "  <tr><td>Phone:</td><td><input type='text' name='Phone' size='15' value=\"${row['Phone']}\" /></td></tr>\n";
 	$s = $s . "  <tr><td>Director:</td><td><input type='text' name='Director' size='40' value=\"${row['Director']}\" /></td></tr>\n";
@@ -221,12 +221,12 @@ function hopdb_notify_submission($row)
 	$recip = get_option("HOPDB_contact");
 	if ($recip=="") return false;
 	$headers = 'From: IHOPNetwork.com <submission@ihopnetwork.com>' . "\r\n";
-	$subject = "HOPDB Submission: $row[Name]";
+	$subject = "HOPDB Submission: $row['Name']";
 	$body = "
 New HOP Database Submission
-Name: $row[Name]
-Loc: $row[City], $row[State] $row[Zip] $row[Country]
-Web: $row[Website]
+Name: ${row['Name']}
+Loc: ${row['City']}, ${row['State']} ${row['Zip']} ${row['Country']}
+Web: ${row['Website']}
 Link: http://www.ihopnetwork.com/wp-admin/admin.php?page=reviewhop
 ";
 	mail($recip, $subject, $body, $headers);
@@ -256,14 +256,14 @@ function hopdb_save()
 	switch($mode)
 		{
 		case "usersubmission":
-			if (md5($_POST[response]) != $_POST[required]) return "<h4>Submission Cancelled -- Challenge Failed.</h4>";
+			if (md5($_POST['response']) != $_POST['required']) return "<h4>Submission Cancelled -- Challenge Failed.</h4>";
 			if (!hopdb_rowvalid($row, $msg)) return $msg;
 			hopdb_insert($row, 'user'); 
 			$s = "<h2>Thank-you for your submission.</h2>"; 
 			hopdb_notify_submission($row);
 			break;
 		case "useredit":
-			if (!hopdb_check_password($row[ID], $row[Password]))
+			if (!hopdb_check_password($row['ID'], $row['Password']))
 				{
 				$s = "<h2>Password is not valid.</h2>\n";
 				break;
@@ -282,7 +282,7 @@ function hopdb_save()
 			if (!hopdb_rowvalid($row, $msg)) {$s = $msg; break; }
 			hopdb_insert($row); 
 			$s = "<h2>House of Prayer Added.</h2>"; 
-			header("Location: ".hopdb_current_url("?page=addhop&added=".urlencode($row[Name])));
+			header("Location: ".hopdb_current_url("?page=addhop&added=".urlencode($row['Name'])));
 			break;
 		case "edit":				
 			if (!hopdb_rowvalid($row, $msg)) {$s = $msg; break; }
@@ -290,20 +290,20 @@ function hopdb_save()
 			$s = "<h2>House of Prayer Updated.</h2>"; 
 			break;
 		case "delete":	case "userdelete":
-			if ($mode=="userdelete" && !hopdb_check_password($row[ID], $row[Password]))
+			if ($mode=="userdelete" && !hopdb_check_password($row['ID'], $row['Password']))
 				{
 				$s = "<h2>Password is not valid.</h2>\n";
 				break;
 				}
-			else if ($mode=="delete" && $_REQUEST[confirmdelete]=="")
+			else if ($mode=="delete" && $_REQUEST['confirmdelete']=="")
 				{
 				$s = "<h2>You must check the box to confirm deletion</h2>\n";
 				break;
 				}
-			if ($row[ID]=="") {$s = "<h2>No ID to delete</h2>";break;}
-			hopdb_execute("DELETE FROM hoplist WHERE ID=$row[ID]");
+			if ($row['ID']=="") {$s = "<h2>No ID to delete</h2>";break;}
+			hopdb_execute("DELETE FROM hoplist WHERE ID=${row['ID']}");
 			if ($mode=="userdelete") header("Location: ".site_url());
-			header("Location: ".hopdb_current_url("?page=".$_REQUEST[page]));
+			header("Location: ".hopdb_current_url("?page=".$_REQUEST['page']));
 			break;
 		case "clearsubmissions":
 			hopdb_execute("DELETE FROM userhoplist WHERE 1");
@@ -393,17 +393,17 @@ function DoLoad(row, siteid)
 	$n = 0;
 	while($row = mysql_fetch_assoc($r))
 		{
-		if ($row[Website]=="") continue;
+		if ($row['Website']=="") continue;
 		++$n;
 		$s = $s . "  <tr>\n";
 		$s = $s . "    <td width='300' style='border:solid 1px black'>";
-		$s = $s . "		<a href='".hopdb_current_url("?page=edithop&id=$row[ID]")."' style='white-space: nowrap;' target='_new'><img width='16' height='16' src='".hopdb_plugin_url("/images/ball.png")."'/></a>";
-		$s = $s . "		<a href='$row[Website]' style='white-space: nowrap;' target='_new'>$row[Name]</a>";
+		$s = $s . "		<a href='".hopdb_current_url("?page=edithop&id=${row['ID']}")."' style='white-space: nowrap;' target='_new'><img width='16' height='16' src='".hopdb_plugin_url("/images/ball.png")."'/></a>";
+		$s = $s . "		<a href='${row['Website']}' style='white-space: nowrap;' target='_new'>${row['Name']}</a>";
 		$s = $s . "	</td>\n";
 		$s = $s . "    <td width='30' align='center' style='border:solid 1px black'><div id='C$n'>Waiting...</div></td>\n";
-		$s = $s . "    <td width='50' align='center' style='border:solid 1px black'><div id='D$n' onDblClick='DD($n,\"$row[ID]\",\"\")'>".(strstr($row[Website],"http://")?$row[ID]:"")."</div></td>\n";
+		$s = $s . "    <td width='50' align='center' style='border:solid 1px black'><div id='D$n' onDblClick='DD($n,\"${row['ID']}\",\"\")'>".(strstr($row[Website],"http://")?${row['ID']}:"")."</div></td>\n";
 		$s = $s . "    <td width='100' align='left' style='border:solid 1px black'><div id='E$n'>...</div></td>\n";
-		$s = $s . "    <td width='200' align='left' style='border:solid 1px black'><div id='F$n'>$row[Website] <a href='$row[Website]' target='_new'><img src='$web' width=16 height=16 align='right'/></a></div></td>\n";
+		$s = $s . "    <td width='200' align='left' style='border:solid 1px black'><div id='F$n'>${row['Website']} <a href='${row['Website']}' target='_new'><img src='$web' width=16 height=16 align='right'/></a></div></td>\n";
 		$s = $s . "  </tr>\n";
 		}
 
