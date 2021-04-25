@@ -137,7 +137,7 @@ function hopdb_entry_form($row, $mode="")
 	$s = $s . "  <tr><td>Zip:</td><td><input type='text' name='Zip' size='10' value=\"{$row['Zip']}\" /></td></tr>\n";
 	$ctry = $row['Country'] == "" ? "United States" : $row['Country'];
 	$s = $s . "  <tr><td>Country:</td><td><input type='text' name='Country' id='Country' size='20' value=\"$ctry\" />".hopdb_country_selector("document.hopform.Country")."</td></tr>\n";
-	$s = $s . "  <tr><td>Graphic:</td><td><input type='text' name='Graphic' size='50' value='${row['Graphic']}' /></td></tr>\n";
+	$s = $s . "  <tr><td>Graphic:</td><td><input type='text' name='Graphic' size='50' value=\"${row['Graphic']}\" /></td></tr>\n";
 	if ($mode == "edit" && $row['Email'] != "")
 		$eml = "<a href='" . hopdb_current_url("?page=hopdbformletters&id=" . $_REQUEST['id'] . "&e=" . urlencode($row['Email'])) . "'><img src='" . hopdb_plugin_url('/images/menu/email_go.png') . "' width='15' height='15'/></a>";
 	else
@@ -247,7 +247,7 @@ function hopdb_check_password($id, $check)
 function hopdb_save()
 	{
 	$row = hopdb_getpost();
-	$mode = @$_POST['action'];
+	$mode = $_POST['action'];
 
 //print "<br/>rowcount=". count($row) . ", mode=$mode, admin=".(hopdb_admin()?"Yes":"No");die();
 	if (!hopdb_admin() && strstr($mode, "user") === false) return;

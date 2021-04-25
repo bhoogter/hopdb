@@ -58,7 +58,7 @@ function hopdb_category_icon($i)
 	{
 	$x = hopdb_category_config();
 	$y = $x[$i];
-	return !$y ? $x[Other][0] : $y[0];
+	return !$y ? $x['Other'][0] : $y[0];
 	}
 
 function hopdb_fields($user='')
@@ -202,7 +202,7 @@ function hopdb_cleanrow($r)
 				$p = hopdb_plugin_dir("/links/");
 
 				$ext = strtolower(substr($b,strlen($b)-3));
-				$b = $r[State]."-".$r[City]."-".uniqid();
+				$b = $r['State']."-".$r['City']."-".uniqid();
 				switch($ext)
 					{
 					case "jpg": case "peg": 	
@@ -247,7 +247,7 @@ function hopdb_cleanrow($r)
 		}
 
 	if (''.$r['Password'] == '') $r['Password'] = hopdb_new_password();
-	if (''.$r['Password'] == hopdb_masterpass()) $r['Password'] = hopdb_sitepassword($r[ID]);
+	if (''.$r['Password'] == hopdb_masterpass()) $r['Password'] = hopdb_sitepassword($r['ID']);
 //print_r($r);wp_die();
 	return $r;
 	}
@@ -261,14 +261,14 @@ function hopdb_sitepassword($id)
 //print "<br/>hopdb_sitepassword($id)";
 	$row = hopdb_query_row("SELECT * FROM hoplist WHERE ID=$id");
 //print_r($row);
-	return $row[Password];
+	return $row['Password'];
 	}
 
 function hopdb_integrate($row)
 	{
 	hopdb_update($row, 'user');
-	hopdb_insert(get_user_hop_row($row[ID]));
-	hopdb_query("DELETE FROM userhoplist WHERE ID=$row[ID]");
+	hopdb_insert(get_user_hop_row($row['ID']));
+	hopdb_query("DELETE FROM userhoplist WHERE ID=${row['ID']}");
 	return true;
 	}
 
